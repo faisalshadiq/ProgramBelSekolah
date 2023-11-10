@@ -1,0 +1,89 @@
+unit UnAlarm;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ComCtrls, Buttons,nuest;
+
+type
+  Tfalaram = class(TForm)
+    Label2: TLabel;
+    Label3: TLabel;
+    DateTimePicker1: TDateTimePicker;
+    ComboBox1: TComboBox;
+    Label1: TLabel;
+    Edit1: TEdit;
+    Label4: TLabel;
+    Edit2: TEdit;
+    SpeedButton1: TSpeedButton;
+    btsimpan: TBitBtn;
+    btbtal: TBitBtn;
+    BitBtn3: TBitBtn;
+    OpenDialog1: TOpenDialog;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btsimpanClick(Sender: TObject);
+    procedure btbtalClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  falaram: Tfalaram;
+
+implementation
+
+uses DateUtils, Unutama;
+
+{$R *.dfm}
+
+procedure Tfalaram.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+Action:=caFree;
+falaram:=nil;
+end;
+
+procedure Tfalaram.btsimpanClick(Sender: TObject);
+begin
+if btsimpan.Caption='Simpan' then
+    begin
+    ProsesA('insert into waktu (hari,jam,pesan,bunyi)values('+
+    QuotedStr(FloatToStr(ComboBox1.ItemIndex+1))+','+
+    QuotedStr(FormatDateTime('hh:mm:ss',DateTimePicker1.DateTime))+','+
+     QuotedStr(Edit1.Text)+','+
+    QuotedStr(Edit2.Text)+')');
+    ShowMessage('Proses Berhasil');
+    end
+    else
+    begin
+    end;
+btbtal.Click;
+if futama<>nilthen
+end;
+
+procedure Tfalaram.btbtalClick(Sender: TObject);
+begin
+Edit1.Text:='';
+Edit2.Text:='';
+DateTimePicker1.DateTime:=now;
+ComboBox1.ItemIndex:=DayOfTheWeek(date)-1;
+end;
+
+procedure Tfalaram.FormCreate(Sender: TObject);
+begin
+btbtalClick(Sender);
+end;
+
+procedure Tfalaram.SpeedButton1Click(Sender: TObject);
+begin
+if OpenDialog1.Execute then
+    begin
+    Edit2.Text:=OpenDialog1.FileName;
+    end;
+end;
+
+end.

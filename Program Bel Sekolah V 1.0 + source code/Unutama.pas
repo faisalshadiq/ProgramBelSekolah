@@ -1,0 +1,104 @@
+unit Unutama;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, DB, ADODB, ComCtrls, Buttons,nuest,
+  ATTerbilang, MemDS, DBAccess, MyAccess, Grids, DBGrids, OleCtrls,
+  HTTSLib_TLB, abfControls, ACTIVEVOICEPROJECTLib_TLB, HSRLib_TLB,
+  WMPLib_TLB;
+
+type
+  Tfutama = class(TForm)
+    Timer1: TTimer;
+    koneksiA: TADOConnection;
+    ADODataSet1: TADODataSet;
+    Timer2: TTimer;
+    addscariA: TADODataSet;
+    DBGrid1: TDBGrid;
+    DataSource1: TDataSource;
+    BitBtn2: TBitBtn;
+    GroupBox1: TGroupBox;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    DateTimePicker1: TDateTimePicker;
+    Label2: TLabel;
+    Label3: TLabel;
+    BitBtn1: TBitBtn;
+    procedure Timer1Timer(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  futama: Tfutama;
+  id:string;
+
+implementation
+
+uses Math, DateUtils, UnAlarm, undataalarm;
+
+{$R *.dfm}
+
+procedure Tfutama.Timer1Timer(Sender: TObject);
+begin
+//Label1.Caption:=FormatDateTime('hh:mm:ss',Time);
+Label9.Caption:=FormatDateTime('hh:mm:ss',Time);
+
+If FormatDateTime('hh:mm:ss',Time)=FormatDateTime('hh:mm:ss',DateTimePicker1.Time) then
+    begin
+    //Caption:=addscariA['pesan'];
+    DirectSS1.Speak(addscariA['pesan']);
+    if FileExists(addscariA['bunyi']) then
+        begin
+        WindowsMediaPlayer1.URL:=addscariA['bunyi'];
+        WindowsMediaPlayer1.controls.play;
+        end;
+    Timer2.Enabled:=true;
+    end;
+end;
+
+procedure Tfutama.FormCreate(Sender: TObject);
+
+begin
+
+DateTimePicker1.DateTime:=now;
+end;
+
+procedure Tfutama.Timer2Timer(Sender: TObject);
+begin
+Label7.Caption:=': '+FormatDateTime('DDDD',Time);
+Label8.Caption:=': '+FormatDateTime('dd MMMM yyyy',Date);
+if cariA('select * from waktu  where jam>time()and hari='+
+          (FloatToStr(DayOfTheWeek(Date)))+' order by jam asc ')>0 then
+    begin
+    DateTimePicker1.Time:=addscariA['jam'];
+    Label3.Caption:=TimeToStr(DateTimePicker1.Time);
+    
+    end;
+Timer2.Enabled:=false;
+end;
+
+procedure Tfutama.BitBtn2Click(Sender: TObject);
+begin
+if falaram=nil then falaram:=Tfalaram.Create(Application) ;
+falaram.Show;
+end;
+
+procedure Tfutama.BitBtn1Click(Sender: TObject);
+begin
+if fdataalaram=nil then fdataalaram:=Tfdataalaram.Create(Application);
+fdataalaram.Show;
+end;
+
+end.
